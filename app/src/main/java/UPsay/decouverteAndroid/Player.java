@@ -20,7 +20,7 @@ public class Player {
     }
 
     public void draw(Canvas canvas) {
-        canvas.drawCircle((float)x,(float)y,40,paint);
+        canvas.drawCircle((float)x,(float)y,30,paint);
     }
 
     public void update() {
