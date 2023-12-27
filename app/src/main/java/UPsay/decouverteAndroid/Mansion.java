@@ -14,13 +14,17 @@ import androidx.core.content.ContextCompat;
 
 public class Mansion extends SurfaceView implements SurfaceHolder.Callback {
     private final Player player;
-    private final GameLoop gameLoop;
+    private GameLoop gameLoop;
+    private Joystick joystick;
 
     //Manage touch and move player
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN:
+                player.setPos((double)event.getX(),(double)event.getY());
+                return true;
+            case MotionEvent.ACTION_MOVE:
                 player.setPos((double)event.getX(),(double)event.getY());
                 return true;
         }
@@ -39,6 +43,8 @@ public class Mansion extends SurfaceView implements SurfaceHolder.Callback {
         //Initialize the player instance
         player = new Player(getContext(),500,500);
 
+        //Initialize the joystick instance
+        joystick = new Joystick();
         setFocusable(true);
     }
 
