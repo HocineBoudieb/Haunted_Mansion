@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import androidx.core.content.ContextCompat;
 
 public class Player {
+    private static final double MAX_SPEED = 20;
     private double x;
     private double y;
     private Paint paint;
@@ -23,7 +24,14 @@ public class Player {
         canvas.drawCircle((float)x,(float)y,30,paint);
     }
 
-    public void update() {
+    public void update(Joystick joystick){
+        if(Math.abs(joystick.getRadiusRateX())> Math.abs(joystick.getRadiusRateY())){
+            x = x+joystick.getRadiusRateX()*MAX_SPEED/joystick.getRadius();
+        }else{
+            y = y+joystick.getRadiusRateY()*MAX_SPEED/joystick.getRadius();
+        }
+
+
     }
 
     public void setPos(double x, double y) {

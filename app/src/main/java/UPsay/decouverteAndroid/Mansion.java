@@ -22,10 +22,23 @@ public class Mansion extends SurfaceView implements SurfaceHolder.Callback {
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN:
-                player.setPos((double)event.getX(),(double)event.getY());
+                if(joystick.isPressedOnPos((double)event.getX(),(double)event.getY())){
+                    joystick.setPressed(true);
+                }else{
+                    if(((double)event.getX()<700) && ((double)event.getY()>500)) {
+                        joystick.changePos((double)event.getX(),(double)event.getY());
+                        joystick.setPressed(true);
+                    }
+                }
                 return true;
             case MotionEvent.ACTION_MOVE:
-                player.setPos((double)event.getX(),(double)event.getY());
+                if(joystick.getPressed()){
+                    joystick.setPos((double)event.getX(),(double)event.getY());
+                }
+                return true;
+            case MotionEvent.ACTION_UP:
+                joystick.setPressed(false);
+                joystick.resetPos();
                 return true;
         }
         return super.onTouchEvent(event);
@@ -44,7 +57,7 @@ public class Mansion extends SurfaceView implements SurfaceHolder.Callback {
         player = new Player(getContext(),500,500);
 
         //Initialize the joystick instance
-        joystick = new Joystick(200,750,70,40);
+        joystick = new Joystick(350,750,70,40);
         setFocusable(true);
     }
 
@@ -80,6 +93,6 @@ public class Mansion extends SurfaceView implements SurfaceHolder.Callback {
 
     public void update() {
         joystick.update();
-        player.update();
+        player.update(joystick);
     }
 }
