@@ -44,7 +44,7 @@ public class Mansion extends SurfaceView implements SurfaceHolder.Callback {
         player = new Player(getContext(),500,500);
 
         //Initialize the joystick instance
-        joystick = new Joystick();
+        joystick = new Joystick(200,750,70,40);
         setFocusable(true);
     }
 
@@ -66,6 +66,7 @@ public class Mansion extends SurfaceView implements SurfaceHolder.Callback {
     public void draw(Canvas canvas) {
         super.draw(canvas);
         drawTest(canvas);
+        joystick.draw(canvas);
         player.draw(canvas);
     }
     public void drawTest(Canvas canvas){
@@ -78,6 +79,7 @@ public class Mansion extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void update() {
+        joystick.update();
         player.update();
     }
 }
