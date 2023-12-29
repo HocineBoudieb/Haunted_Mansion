@@ -27,6 +27,7 @@ public class Player {
 
     public Player(Context context, double _x, double _y) {
         currentState = PlayerState.STATIC;
+        sprite = new Sprite(context);
         this.x = _x;
         this.y = _y;
         paint = new Paint();
@@ -36,7 +37,7 @@ public class Player {
 
     public void draw(Canvas canvas)
     {
-        sprite.draw(currentState);
+        sprite.draw(canvas,currentState,x,y);
     }
 
     public void update(Joystick joystick){
