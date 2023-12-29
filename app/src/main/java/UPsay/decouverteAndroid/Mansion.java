@@ -12,10 +12,16 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
+
+import UPsay.decouverteAndroid.map.TileMap;
+
 public class Mansion extends SurfaceView implements SurfaceHolder.Callback {
     private final Player player;
     private GameLoop gameLoop;
     private Joystick joystick;
+    private TileMap tileMap1;
 
     //Manage touch and move player
     @Override
@@ -58,6 +64,13 @@ public class Mansion extends SurfaceView implements SurfaceHolder.Callback {
 
         //Initialize the joystick instance
         joystick = new Joystick(350,750,70,40);
+
+        //initialize Map
+        int[][] ids = new int[50][50];
+        for(int i = 0; i< ids.length;i++){
+            Arrays.fill(ids[i],298);
+        }
+        tileMap1 = new TileMap(getContext(),ids);
         setFocusable(true);
     }
 
@@ -78,7 +91,8 @@ public class Mansion extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
-        drawTest(canvas);
+        //drawTest(canvas);
+        tileMap1.draw(canvas);
         joystick.draw(canvas);
         player.draw(canvas);
     }
