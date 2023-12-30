@@ -10,7 +10,6 @@ import androidx.core.content.ContextCompat;
 import UPsay.decouverteAndroid.entities.Sprite;
 
 public class Player {
-    private static final double MAX_SPEED = 20;
     private PlayerState currentState;
     private double x;
     private double y;
@@ -25,14 +24,14 @@ public class Player {
         RIGHT    // Le joueur se déplace vers la droite
     }
 
-    public Player(Context context, double _x, double _y) {
+    public Player(Context context) {
         currentState = PlayerState.STATIC;
         sprite = new Sprite(context);
-        this.x = _x;
-        this.y = _y;
         paint = new Paint();
         int color = ContextCompat.getColor(context, R.color.player);
         paint.setColor(color);
+        x = MainActivity.PHONE_WIDTH/2.0;
+        y = MainActivity.PHONE_HEIGHT/2.0;
     }
 
     public void draw(Canvas canvas)
@@ -53,14 +52,12 @@ public class Player {
             }else {
                 currentState = PlayerState.LEFT;
             }
-            x = x+joystick.getRadiusRateX()*MAX_SPEED/joystick.getRadius();
         }else{
             if(valueY>0){
                 currentState = PlayerState.UP;
             }else {
                 currentState = PlayerState.DOWN;
             }
-            y = y+joystick.getRadiusRateY()*MAX_SPEED/joystick.getRadius();
         }
 
 
