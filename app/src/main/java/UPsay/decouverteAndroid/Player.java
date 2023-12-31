@@ -59,8 +59,13 @@ public class Player {
                 currentState = PlayerState.DOWN;
             }
         }
-
-
     }
 
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
 }

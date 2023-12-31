@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import java.util.Arrays;
 
 import UPsay.decouverteAndroid.Joystick;
+import UPsay.decouverteAndroid.MainActivity;
 import UPsay.decouverteAndroid.Player;
 
 public class MapManager {
@@ -46,6 +47,8 @@ public class MapManager {
             }
         }
         currentMap = new TileMap(context,ids);
+        x = -96*currentMap.getLength()/2.0+MainActivity.PHONE_WIDTH/2.0;
+        y = -96*currentMap.getLength()/2.0+MainActivity.PHONE_HEIGHT/2.0;
     }
     public void draw(Canvas canvas){
         for (int i = 0; i < currentMap.getLength(); i++) {
@@ -67,15 +70,17 @@ public class MapManager {
         }
         if(Math.abs(valueX)> Math.abs(valueY)){
             double moveX = joystick.getRadiusRateX()*MAX_SPEED/joystick.getRadius();
-            x=x+moveX*-1;
+            if(canMoveTo(getPxlToIdx(x+moveX*-1,MainActivity.PHONE_WIDTH),getPxlToIdx(y,MainActivity.PHONE_HEIGHT)))
+                x=x+moveX*-1;
         }else{
             double moveY = joystick.getRadiusRateY()*MAX_SPEED/joystick.getRadius();
-            if(canMoveTo(x,y+moveY))
+            if(canMoveTo(getPxlToIdx(x,MainActivity.PHONE_WIDTH),getPxlToIdx(y+moveY*-1,MainActivity.PHONE_HEIGHT)))
                 y=y+moveY*-1;
         }
     }
     public boolean canMoveTo(double _x, double _y){
-        return !isIn(TileMap.boundTiles, currentMap.getId((int) y + (int) _y, (int) x + (int) _x));
+        if(_x>49 || _y>49 || _x<0 || _y<0)return false;
+        return !isIn(TileMap.boundTiles, currentMap.getId((int) _y , (int) _x ));
     }
     private boolean isIn(int[] key,int value){
         for (int j : key) {
@@ -83,5 +88,8 @@ public class MapManager {
                 return true;
         }
         return false;
+    }
+    private double getPxlToIdx(double pxl,double phoneDim){
+        return (pxl-phoneDim/2.0)/-96;
     }
 }
