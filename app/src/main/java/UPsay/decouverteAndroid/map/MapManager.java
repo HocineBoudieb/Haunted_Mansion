@@ -20,33 +20,7 @@ public class MapManager {
 
     public MapManager(Context context) {
         //initialize Map
-        int[][] ids = new int[50][50];
-
-        // Remplir les bords avec les valeurs spécifiées
-        for (int i = 0; i < 50; i++) {
-            for (int j = 0; j < 50; j++) {
-                if (i == 0 && j == 0) {
-                    ids[i][j] = TileMap.TOP_LEFT;
-                } else if (i == 0 && j == 50 - 1) {
-                    ids[i][j] = TileMap.TOP_RIGHT;
-                } else if (i == 0) {
-                    ids[i][j] = TileMap.TOP;
-                } else if (i == 50 - 1 && j == 0) {
-                    ids[i][j] = TileMap.BOTTOM_LEFT;
-                } else if (i == 50 - 1 && j == 50 - 1) {
-                    ids[i][j] = TileMap.BOTTOM_RIGHT;
-                } else if (i == 50 - 1) {
-                    ids[i][j] = TileMap.BOTTOM;
-                } else if (j == 0) {
-                    ids[i][j] = TileMap.LEFT;
-                } else if (j == 50 - 1) {
-                    ids[i][j] = TileMap.RIGHT;
-                } else {
-                    ids[i][j] = TileMap.CENTER;
-                }
-            }
-        }
-        currentMap = new TileMap(context,ids);
+        currentMap = new Map1(context);
         x = -96*currentMap.getLength()/2.0+MainActivity.PHONE_WIDTH/2.0;
         y = -96*currentMap.getLength()/2.0+MainActivity.PHONE_HEIGHT/2.0;
     }

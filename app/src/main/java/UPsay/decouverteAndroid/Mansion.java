@@ -24,6 +24,25 @@ public class Mansion extends SurfaceView implements SurfaceHolder.Callback {
     private Joystick joystick;
     private MapManager mapManager;
 
+    // different states in enum
+    public enum GameState {
+        STARTING,
+        PLAYING,
+        PAUSED,
+        GAME_OVER
+    }
+
+    // Champ pour stocker l'état actuel du jeu
+    private GameState gameState;
+
+
+    public GameState getGameState() {
+        return gameState;
+    }
+    public void setGameState(GameState state) {
+        gameState = state;
+    }
+
     //Manage touch and move player
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -99,7 +118,7 @@ public class Mansion extends SurfaceView implements SurfaceHolder.Callback {
         int color = ContextCompat.getColor(getContext(), R.color.white);
         paint.setColor(color);
         paint.setTextSize(100);
-        canvas.drawText("UPDATES : "+count,100,100, paint);
+        canvas.drawText("HEY HEY",100,100, paint);
     }
 
     public void update() {

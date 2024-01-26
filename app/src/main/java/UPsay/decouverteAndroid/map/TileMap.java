@@ -5,8 +5,9 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.service.quicksettings.Tile;
 
-public class TileMap {
+public abstract class TileMap {
     //Tiles i want to use
+    public final static int exitTile = 10;
     public final static int TOP_RIGHT = 277;
     public final static int TOP_LEFT = 275;
     public final static int TOP = 276;
@@ -19,9 +20,12 @@ public class TileMap {
     public final static int[] boundTiles = {TOP,TOP_LEFT,TOP_RIGHT,LEFT,RIGHT,BOTTOM,BOTTOM_LEFT,BOTTOM_RIGHT};
     private int[][] tileIds;
     private TileSet tiles;
-    public TileMap(Context context,int[][] tileIds) {
-        this.tileIds = tileIds;
+    public TileMap(Context context) {
         tiles = new TileSet(context);
+    }
+
+    public void setTileIds(int[][] tileIds) {
+        this.tileIds = tileIds;
     }
 
     public int getLength(){
@@ -36,4 +40,6 @@ public class TileMap {
     public Bitmap getBmp(int tileId) {
         return tiles.getTiles(tileId);
     }
+
+    public abstract int updateRoom();
 }
