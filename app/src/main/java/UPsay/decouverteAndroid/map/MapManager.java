@@ -3,15 +3,20 @@ package UPsay.decouverteAndroid.map;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.util.Log;
 
 import java.util.Arrays;
+import java.util.Map;
 
 import UPsay.decouverteAndroid.Joystick;
 import UPsay.decouverteAndroid.MainActivity;
 import UPsay.decouverteAndroid.Player;
 
 public class MapManager {
+    //Initialize Maps
     private TileMap currentMap;
+    private Map1 map1;
+    private Map2 map2;
     //Initialize Camera
     private double x;
     private double y;
@@ -20,7 +25,9 @@ public class MapManager {
 
     public MapManager(Context context) {
         //initialize Map
-        currentMap = new Map1(context);
+        map1 = new Map1(context);
+        map2 = new Map2(context);
+        currentMap = map1;
         x = -96*currentMap.getLength()/2.0+MainActivity.PHONE_WIDTH/2.0;
         y = -96*currentMap.getLength()/2.0+MainActivity.PHONE_HEIGHT/2.0;
     }
@@ -51,7 +58,28 @@ public class MapManager {
             if(canMoveTo(getPxlToIdx(x,MainActivity.PHONE_WIDTH),getPxlToIdx(y+moveY*-1,MainActivity.PHONE_HEIGHT)))
                 y=y+moveY*-1;
         }
+        int tileId =currentMap.getId((int)getPxlToIdx(y,MainActivity.PHONE_HEIGHT),(int)getPxlToIdx(x,MainActivity.PHONE_WIDTH));
+        //Log.d("TILE","tile n "+tileId);
+        if(tileId==10){
+            changeToRoom(currentMap.updateRoom());
+        }
     }
+
+    private void changeToRoom(int i) {
+        switch (i){
+            case 1:
+                currentMap = map1;
+                break;
+            case 2:
+                currentMap = map2;
+                break;
+            default:
+                currentMap = map1;
+        }
+        x = currentMap.startX;
+        y = currentMap.startY;
+    }
+
     public boolean canMoveTo(double _x, double _y){
         if(_x>49 || _y>49 || _x<0 || _y<0)return false;
         return !isIn(TileMap.boundTiles, currentMap.getId((int) _y , (int) _x ));

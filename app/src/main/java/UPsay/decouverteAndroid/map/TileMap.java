@@ -7,6 +7,8 @@ import android.service.quicksettings.Tile;
 
 public abstract class TileMap {
     //Tiles i want to use
+    final double startX;
+    final double startY;
     public final static int exitTile = 10;
     public final static int TOP_RIGHT = 277;
     public final static int TOP_LEFT = 275;
@@ -20,8 +22,8 @@ public abstract class TileMap {
     public final static int[] boundTiles = {TOP,TOP_LEFT,TOP_RIGHT,LEFT,RIGHT,BOTTOM,BOTTOM_LEFT,BOTTOM_RIGHT};
     private int[][] tileIds;
     private TileSet tiles;
-    public TileMap(Context context) {
-        tiles = new TileSet(context);
+    public TileMap(Context context, double x, double y) {
+        startX = x; startY = y; tiles = new TileSet(context);
     }
 
     public void setTileIds(int[][] tileIds) {
