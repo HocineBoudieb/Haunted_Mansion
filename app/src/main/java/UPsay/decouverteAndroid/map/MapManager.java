@@ -15,8 +15,10 @@ import UPsay.decouverteAndroid.Player;
 public class MapManager {
     //Initialize Maps
     private TileMap currentMap;
+    private int previousMapId;
     private Map1 map1;
     private Map2 map2;
+    private Map3 map3;
     //Initialize Camera
     private double x;
     private double y;
@@ -27,13 +29,19 @@ public class MapManager {
         //initialize Map
         map1 = new Map1(context);
         map2 = new Map2(context);
+        map3 = new Map3(context);
         currentMap = map1;
+        previousMapId = currentMap.id;
         x = -96*currentMap.getLength()/2.0+MainActivity.PHONE_WIDTH/2.0;
         y = -96*currentMap.getLength()/2.0+MainActivity.PHONE_HEIGHT/2.0;
     }
     public void draw(Canvas canvas){
         for (int i = 0; i < currentMap.getLength(); i++) {
             for (int j = 0; j < currentMap.getLength(); j++) {
+                if(previousMapId != currentMap.id){
+                    previousMapId = currentMap.id;
+                    return;
+                }
                 int tileId = currentMap.getId(i,j);
                 Bitmap tile = currentMap.getBmp(tileId);
 
@@ -60,8 +68,8 @@ public class MapManager {
         }
         int tileId =currentMap.getId((int)getPxlToIdx(y,MainActivity.PHONE_HEIGHT),(int)getPxlToIdx(x,MainActivity.PHONE_WIDTH));
         //Log.d("TILE","tile n "+tileId);
-        if(tileId==10){
-            changeToRoom(currentMap.updateRoom());
+        if(isIn(TileMap.exitTiles,tileId)){
+            changeToRoom(currentMap.updateRoom(tileId));
         }
     }
 
@@ -72,6 +80,9 @@ public class MapManager {
                 break;
             case 2:
                 currentMap = map2;
+                break;
+            case 3:
+                currentMap = map3;
                 break;
             default:
                 currentMap = map1;

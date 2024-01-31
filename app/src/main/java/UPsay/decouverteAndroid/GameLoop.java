@@ -1,6 +1,7 @@
 package UPsay.decouverteAndroid;
 
 import android.graphics.Canvas;
+import android.media.MediaPlayer;
 import android.view.SurfaceHolder;
 
 public class GameLoop extends Thread{
@@ -9,6 +10,9 @@ public class GameLoop extends Thread{
     private boolean isRunning = false;
     private SurfaceHolder surfaceHolder;
     private Mansion mansion;
+
+    //Audio Player
+    MediaPlayer mediaPlayer;
     public GameLoop(Mansion mansion, SurfaceHolder surfaceHolder) {
         this.surfaceHolder = surfaceHolder;
         this.mansion = mansion;
@@ -18,6 +22,9 @@ public class GameLoop extends Thread{
         count = 0;
         isRunning = true;
         start();
+        mediaPlayer = MediaPlayer.create(mansion.getContext(), R.raw.loop);
+        mediaPlayer.setLooping(true);
+        mediaPlayer.start();
     }
 
     @Override
