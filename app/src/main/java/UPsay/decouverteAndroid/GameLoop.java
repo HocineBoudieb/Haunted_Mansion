@@ -11,6 +11,7 @@ public class GameLoop extends Thread{
     private SurfaceHolder surfaceHolder;
     private Mansion mansion;
 
+
     //Audio Player
     MediaPlayer mediaPlayer;
     public GameLoop(Mansion mansion, SurfaceHolder surfaceHolder) {
@@ -41,8 +42,9 @@ public class GameLoop extends Thread{
 
         Canvas canvas;
         //Game Loop
-        while(isRunning){
-            count += 1.0/30.0;
+        while (isRunning) {
+            if(mansion.getGameState()== Mansion.GameState.GAME_OVER)isRunning=false;
+            count += 1.0 / 30.0;
             canvas = surfaceHolder.lockCanvas();
 
             mansion.update();
@@ -52,9 +54,9 @@ public class GameLoop extends Thread{
             updateCount++;
             elapsedTime = System.currentTimeMillis() - startTime;
             //Get the difference between theoric time per update and elapsed time
-            sleepTime = (long)(updateCount *(1E+3/MAX_UPS)/*to convert UPS to update per milliseconds*/  - elapsedTime);
+            sleepTime = (long) (updateCount * (1E+3 / MAX_UPS)/*to convert UPS to update per milliseconds*/ - elapsedTime);
             //if this difference is positive, we have to wait a bit to not refresh to early
-            if(sleepTime>0){
+            if (sleepTime > 0) {
                 try {
                     sleep(sleepTime);
                 } catch (InterruptedException e) {
@@ -63,6 +65,13 @@ public class GameLoop extends Thread{
             }
 
         }
+        mediaPlayer.stop();
+        mansion.gameOver();
+        count = 0;
+    }
+
+    public void stopLoop() {
+       interrupt();
     }
 
     public double getCount() {

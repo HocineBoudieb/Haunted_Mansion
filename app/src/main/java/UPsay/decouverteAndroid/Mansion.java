@@ -1,6 +1,8 @@
 package UPsay.decouverteAndroid;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.view.MotionEvent;
@@ -8,6 +10,7 @@ import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -23,19 +26,25 @@ public class Mansion extends SurfaceView implements SurfaceHolder.Callback {
     private GameLoop gameLoop;
     private Joystick joystick;
     private MapManager mapManager;
+    private Bitmap restartButton;
+    private Bitmap winScreen;
 
     // different states in enum
     public enum GameState {
-        STARTING,
         PLAYING,
-        PAUSED,
         GAME_OVER
     }
 
     // Champ pour stocker l'état actuel du jeu
     private GameState gameState;
+    public void gameOver() {
+        gameLoop.stopLoop();
+        Canvas canvas = getHolder().lockCanvas();
+        canvas.drawBitmap(winScreen,0,0,null);
+        canvas.drawBitmap(restartButton, 1800, 100, null);
+        getHolder().unlockCanvasAndPost(canvas);
 
-
+    }
     public GameState getGameState() {
         return gameState;
     }
@@ -55,6 +64,12 @@ public class Mansion extends SurfaceView implements SurfaceHolder.Callback {
                         joystick.changePos((double)event.getX(),(double)event.getY());
                         joystick.setPressed(true);
                     }
+                    else{
+                        if(((double)event.getX()>1700) && ((double)event.getY()<300)){
+                            if(getGameState()==GameState.GAME_OVER){setGameState(GameState.PLAYING);gameLoop = new GameLoop(this,getHolder());gameLoop.startLoop();}
+                            restart();
+                        }
+                    }
                 }
                 return true;
             case MotionEvent.ACTION_MOVE:
@@ -68,6 +83,10 @@ public class Mansion extends SurfaceView implements SurfaceHolder.Callback {
                 return true;
         }
         return super.onTouchEvent(event);
+    }
+
+    private void restart() {
+        mapManager.restart();
     }
 
     public Mansion(Context context) {
@@ -86,7 +105,18 @@ public class Mansion extends SurfaceView implements SurfaceHolder.Callback {
         joystick = new Joystick(350,750,70,40);
 
         //Use a Map Manager
-        mapManager = new MapManager(getContext());
+        mapManager = new MapManager(getContext(),this);
+
+        //Initialize restart Button
+        BitmapFactory.Options bmpOpt = new BitmapFactory.Options();
+        bmpOpt.inScaled = false;
+        restartButton = BitmapFactory.decodeResource(context.getResources(), R.drawable.restart, bmpOpt);
+        restartButton = Bitmap.createScaledBitmap(restartButton,restartButton.getWidth()*1,restartButton.getHeight()*1,false);
+
+        //Create win screen
+
+        winScreen = BitmapFactory.decodeResource(context.getResources(), R.drawable.win, bmpOpt);
+        winScreen = Bitmap.createScaledBitmap(winScreen,MainActivity.PHONE_WIDTH,MainActivity.PHONE_HEIGHT,false);
         setFocusable(true);
     }
 
@@ -104,6 +134,7 @@ public class Mansion extends SurfaceView implements SurfaceHolder.Callback {
     public void surfaceDestroyed(@NonNull SurfaceHolder holder) {
 
     }
+
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
@@ -111,7 +142,9 @@ public class Mansion extends SurfaceView implements SurfaceHolder.Callback {
         mapManager.draw(canvas);
         joystick.draw(canvas);
         player.draw(canvas);
+        canvas.drawBitmap(restartButton, 1800, 100, null);
     }
+
     public void drawTest(Canvas canvas){
         String count = Double.toString(gameLoop.getCount());
         Paint paint = new Paint();

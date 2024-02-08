@@ -3,6 +3,7 @@ package UPsay.decouverteAndroid.map;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.media.MediaPlayer;
 import android.util.Log;
 
 import java.util.Arrays;
@@ -10,30 +11,51 @@ import java.util.Map;
 
 import UPsay.decouverteAndroid.Joystick;
 import UPsay.decouverteAndroid.MainActivity;
+import UPsay.decouverteAndroid.Mansion;
 import UPsay.decouverteAndroid.Player;
+import UPsay.decouverteAndroid.R;
 
 public class MapManager {
+
     //Initialize Maps
     private TileMap currentMap;
     private int previousMapId;
     private Map1 map1;
     private Map2 map2;
     private Map3 map3;
+    private Map4 map4;
+    private Map5 map5;
     //Initialize Camera
     private double x;
     private double y;
     //camera speed
     public static final double MAX_SPEED = 20;
 
-    public MapManager(Context context) {
+    //Mediaplayer for doors
+    MediaPlayer mediaPlayer;
+    private MediaPlayer jumpscare;
+
+    //GameState
+    private Mansion mansion;
+
+    public MapManager(Context context, Mansion mansion) {
+
+        this.mansion = mansion;
         //initialize Map
         map1 = new Map1(context);
         map2 = new Map2(context);
         map3 = new Map3(context);
+        map4 = new Map4(context);
+        map5 = new Map5(context);
         currentMap = map1;
         previousMapId = currentMap.id;
-        x = -96*currentMap.getLength()/2.0+MainActivity.PHONE_WIDTH/2.0;
-        y = -96*currentMap.getLength()/2.0+MainActivity.PHONE_HEIGHT/2.0;
+        x = currentMap.startX;
+        y = currentMap.startY;
+
+        //Create Mediaplayer for doors
+        mediaPlayer = MediaPlayer.create(context, R.raw.door);
+        //for jumpscares
+        jumpscare = MediaPlayer.create(context, R.raw.jumpscare);
     }
     public void draw(Canvas canvas){
         for (int i = 0; i < currentMap.getLength(); i++) {
@@ -74,6 +96,7 @@ public class MapManager {
     }
 
     private void changeToRoom(int i) {
+        mediaPlayer.start();
         switch (i){
             case 1:
                 currentMap = map1;
@@ -83,6 +106,16 @@ public class MapManager {
                 break;
             case 3:
                 currentMap = map3;
+                break;
+            case 4:
+                jumpscare.start();
+                currentMap = map4;
+                break;
+            case 5:
+                currentMap = map5;
+                break;
+            case 6:
+                mansion.setGameState(Mansion.GameState.GAME_OVER);
                 break;
             default:
                 currentMap = map1;
@@ -104,5 +137,9 @@ public class MapManager {
     }
     private double getPxlToIdx(double pxl,double phoneDim){
         return (pxl-phoneDim/2.0)/-96;
+    }
+
+    public void restart() {
+        changeToRoom(1);
     }
 }

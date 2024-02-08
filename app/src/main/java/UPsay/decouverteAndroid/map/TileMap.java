@@ -15,7 +15,7 @@ public abstract class TileMap {
     final double startY;
 
     //Tiles i want to use
-    public static int[] exitTiles = {10,21};
+    public static int[] exitTiles = {10,21,274,296};
     public final static int TOP_RIGHT = 277;
     public final static int TOP_LEFT = 275;
     public final static int TOP = 276;
