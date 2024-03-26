@@ -2,6 +2,8 @@
 
 Welcome to Haunted Mansion, a thrilling Java Android game set in a mysterious mansion filled with puzzles and challenges. Explore multiple rooms, solve puzzles, and find your way out before it's too late!
 
+This game is developed using Java within the Android Studio environment. It leverages various Android libraries and tools for game development, including tilemaps for level design, animation for character movements, and user interface elements for player interaction.
+
 ## Gameplay Overview
 
 - **2D Experience**: Immerse yourself in a 2D environment with intricate tilemaps, creating an eerie atmosphere within the haunted mansion.
@@ -34,6 +36,9 @@ Welcome to Haunted Mansion, a thrilling Java Android game set in a mysterious ma
 
 ## Developpement
 The `GameLoop` class and all the other object 'Sprite' the hero, 'Map' the map... are initiated on the 'Mansion' object resonsible of displaying the mansion, responsible for managing the game's main loop, is located at the following path within the project:
+
+'app/src/main/java/UPsay/decouverteAndroid/'
+
 ## Game Loop Implementation
 ```java
 package UPsay.decouverteAndroid;
