@@ -35,9 +35,9 @@ This game is developed using Java within the Android Studio environment. It leve
 6. **Enjoy**: Immerse yourself in the haunting atmosphere of the mansion and enjoy the adventure!
 
 ## Developpement
-The `GameLoop` class and all the other object 'Sprite' the hero, 'Map' the map... are initiated on the 'Mansion' object resonsible of displaying the mansion, responsible for managing the game's main loop, is located at the following path within the project:
+The `GameLoop` class and all the other object `Sprite` the hero, `Map` the map... are initiated on the `Mansion` object resonsible of displaying the mansion, responsible for managing the game's main loop, is located at the following path within the project:
 
-'app/src/main/java/UPsay/decouverteAndroid/'
+`app/src/main/java/UPsay/decouverteAndroid/`
 
 ## Game Loop Implementation
 ```java
