@@ -33,6 +33,7 @@ Welcome to Haunted Mansion, a thrilling Java Android game set in a mysterious ma
 6. **Enjoy**: Immerse yourself in the haunting atmosphere of the mansion and enjoy the adventure!
 
 ## Game Loop Implementation
+The `GameLoop` class, responsible for managing the game's main loop, is located at the following path within the project:
 
 ```java
 package UPsay.decouverteAndroid;
